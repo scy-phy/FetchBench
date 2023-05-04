@@ -327,12 +327,13 @@ static const uint32_t RCON[10] =
 /*
  * Forward S-box & tables
  */
+// DEBUG: align FTx
 static unsigned char FSb[256];
-static uint32_t FT0[256];
+static uint32_t __attribute__((__aligned__(1024))) FT0[256];
 #if !defined(MBEDTLS_AES_FEWER_TABLES)
-static uint32_t FT1[256];
-static uint32_t FT2[256];
-static uint32_t FT3[256];
+static uint32_t __attribute__((__aligned__(1024))) FT1[256];
+static uint32_t __attribute__((__aligned__(1024))) FT2[256];
+static uint32_t __attribute__((__aligned__(1024))) FT3[256];
 #endif /* !MBEDTLS_AES_FEWER_TABLES */
 
 /*
