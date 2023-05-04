@@ -602,12 +602,17 @@ protected:
 	virtual Json identify() override {
 		size_t no_repetitions = 40000 * (PAGE_SIZE / 4096);
 		
-		Json test_results = test_region_boundary(2 * no_repetitions);
-		bool identified = (test_results["region_boundary"].int_value() != -1);
+		Json test_results_pc = test_trigger_same_pc_different_memory(no_repetitions);
+		Json test_results_mem = test_trigger_different_pc_same_memory(no_repetitions);
+		bool identified = (test_results_pc["triggers_prefetch"].bool_value() == true
+				|| test_results_mem["triggers_prefetch_with_additional_region_accesses"].bool_value() == true);
+
 
 		return Json::object {
 			{ "identified", identified },
-			{ "test_region_boundary", test_results },
+			{ "test_result_same_pc", test_results_pc },
+			{ "test_result_same_mem", test_results_mem },
+
 		};
 	}
 
@@ -616,9 +621,8 @@ protected:
 
 		return Json::object {
 			{ "test_trigger_same_pc_same_memory", test_trigger_same_pc_same_memory(no_repetitions) },
-			{ "test_trigger_same_pc_different_memory", test_trigger_same_pc_different_memory(no_repetitions) },
-			{ "test_trigger_different_pc_same_memory", test_trigger_different_pc_same_memory(no_repetitions) },
 			{ "test_trigger_different_pc_different_memory", test_trigger_different_pc_different_memory(no_repetitions) },
+			{ "test_region_boundary", test_region_boundary(2 * no_repetitions) },
 			{ "test_direction", test_direction(no_repetitions) },
 			{ "test_pc_collision", test_pc_collision(no_repetitions) },
 			{ "test_training_entries", test_training_entries(2 * no_repetitions) },
