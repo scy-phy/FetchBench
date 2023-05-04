@@ -1,0 +1,6 @@
+build/
+plots/
+perf.data*
+*.log
+maps-*.txt
+src/aligned_code.hh

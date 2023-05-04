@@ -1,0 +1,4 @@
+#define CPU_CORE_VICTIM     (3)
+#define CPU_CORE_ATTACKER   (2)
+#define CPU_CORE_UNRELATED1 (1)
+#define CPU_CORE_UNRELATED2 (0)
