@@ -2,26 +2,21 @@
 
 ## Modules
 
- 1. userspace-app (Userspace application)
+ 1. `userspace-app` (Userspace application): 
  One end of the covert-channel that receives the secret data.
  
- 3. kernel-modules/rpi4-module-cache (Kernel module)
+ 2. `tfa-service` (EL3 service):
+ Other end of the covert-channel that sends the secret data. This service runs in Arm Trusted Firmware (https://github.com/ARM-software/arm-trusted-firmware)
+
+ 3. `kernel-modules/rpi4-module-cache` (Kernel module):
  Kernel module that collects the hits and miss in cache.
  
- 4. kernel-modules/rpi4-module-ccr (Kernel module)
- Kernel module for source timer
+ 4. `kernel-modules/rpi4-module-ccr` (Kernel module):
+ Kernel module for timer source
  
- 5. tfa-service (EL3 service)
-Another end of the covert-channel that sends the secret data. This service runs in Arm Trusted Firmware (https://github.com/ARM-software/arm-trusted-firmware)
-
 
 ## Prerequisite
-1. Clone the Arm-trusted-firmware 
-```
-git clone https://github.com/ARM-software/arm-trusted-firmware.git
-```
- **OR**
- Clone OP-TEE project (It contains arm trusted firmware and OPTEE OS) [ Follow [doc](https://github.com/OP-TEE/manifest)]
+1. Clone OP-TEE project (It contains arm trusted firmware and OPTEE OS) [ Follow [doc](https://github.com/OP-TEE/manifest)]
  ```
  git clone https://github.com/OP-TEE/manifest
  ```
