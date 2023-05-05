@@ -20,7 +20,7 @@
  ```
  git clone https://github.com/OP-TEE/manifest
  ```
-and copy the tfa-service
+and copy the `tfa-service`
 ```
 cp -r tfa-service/prefetch_induce_svc arm-trusted-firmware/services
 ```
@@ -44,7 +44,7 @@ index 3964469..dd21e56 100644
 
 
 ## Compilation steps
-1. userspace-app
+1. `userspace-app`
 ```
 mkdir build
 cd build
@@ -52,7 +52,7 @@ cmake .. -P ../rkpi4.cmake
 cd ..
 make -C build
 ```
-2. rpi4-module-cache and rpi4-module-ccr
+2. `rpi4-module-cache` and `rpi4-module-ccr`
 ```
 make ARCH=arm64 CROSS_COMPILE=<ARM_TOOLCHAIN_PATH>/bin/aarch64-linux-gnu-
 ```
