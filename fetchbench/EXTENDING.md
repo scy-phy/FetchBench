@@ -135,7 +135,7 @@ typedef struct {
 } Mapping;
 ```
 
-Use the following pattern to allocate/deallocate memory:
+Use the following pattern to allocate/de-allocate memory:
 
 ```c++
 // Allocate a mapping
@@ -204,7 +204,7 @@ maccess_noinline(ptr + 2 * CACHE_LINE_SIZE);
 
 In addition, we also provide (non-inlining) variants of the `maccess` functions that are aligned at certain boundaries in memory. As a result, the load instructions in these functions are also (nearly) aligned to these boundaries. For each boundary, we provide two `maccess` functions.
 
-We use these functions to test for program counter collisions. They are implemented in `src/aligned_maccess`[`.cc`](src/aligned_maccess.cc)/[`.hh`](src/aligned_maccess.hh). The functions are named `maccess_X_Y`. `X` determines the alignment, e.g. `X=5` means that the function is aligned at a 2^5=32 byte boundary in memory. `Y` is either `1` for the first function or `2` for the second function. For convenience, we also proivide a function `get_maccess_functions(X)` that returns a pair of function pointers to the two functions aligned at a particular boundary 2^`X`. The following code snippet gives an example how to use this:
+We use these functions to test for program counter collisions. They are implemented in `src/aligned_maccess`[`.cc`](src/aligned_maccess.cc)/[`.hh`](src/aligned_maccess.hh). The functions are named `maccess_X_Y`. `X` determines the alignment, e.g. `X=5` means that the function is aligned at a 2^5=32 byte boundary in memory. `Y` is either `1` for the first function or `2` for the second function. For convenience, we also provide a function `get_maccess_functions(X)` that returns a pair of function pointers to the two functions aligned at a particular boundary 2^`X`. The following code snippet gives an example how to use this:
 
 ```c++
 vector<size_t> offsets_train = {0, 2, 4, 6, 8};

@@ -46,7 +46,7 @@ Here are some command line arguments that can be used to override specific param
 
 ### Thresholds and Dealing With Noise
 - `-f`: Flush+Reload threshold. If not specified, we try to determine it automatically.
-- `-n`: Noise level threshold between `0` and `1000`. Used to filter out a constant noise floor. If not specified, we try to dermine it automatically. On (nearly) noise-free platforms, `0` should work fine.
+- `-n`: Noise level threshold between `0` and `1000`. Used to filter out a constant noise floor. If not specified, we try to determine it automatically. On (nearly) noise-free platforms, `0` should work fine.
 - `-s`: Whether to sleep a microsecond before probing the cache (`1`) or not (`0`). This sometimes improves the signal strength, especially on ARM. If not specified, we try to automatically determine what works better.
 
 ### Running Testcases Selectively
@@ -60,10 +60,10 @@ The code generates a lot of traces (`trace-*.json`), some figures based on these
 See [EXTENDING.md](EXTENDING.md) for instructions on how to add testcases for other prefetcher designs to FetchBench.
 
 ## Building the Source Code Documentation
-If you have [Doxygen](https://doxygen.nl/) installed, you can use it to generate a source code documentation for the FetchBench sources. Just run:
+If you have [Doxygen](https://doxygen.nl/) installed, you can generate an HTML-based source code documentation for the FetchBench sources as follows:
 
 ```
 make -C build doc_doxygen
 ```
 
-The documentaiton is generated in `build/docs`.
+The documentation is generated in `build/docs`.
