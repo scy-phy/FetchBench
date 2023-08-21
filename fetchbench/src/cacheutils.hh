@@ -65,8 +65,49 @@
  *                  User configuration End
  * ============================================================ */
 
+/**
+ * Initializes the timing source, if necessary.
+ *
+ * @param[in]  ctr_cpu  The CPU core to run any additional workload on,
+ *                      e.g., a counter thread.
+ */
 void clock_init(int ctr_cpu);
+
+/**
+ * De-initializes the timing source, if necessary.
+ */
 void clock_teardown();
+
+// Forward declaration of primitives for documentation
+
+/**
+ * Returns a current timestamp from the timing source. Will be inlined.
+ *
+ * @return     The timestamp
+ */
+__attribute__((always_inline)) static inline uint64_t rdtsc();
+
+/**
+ * Flushes the given address p from the cache. Will be inlined.
+ *
+ * @param      p     The address to flush
+ */
+__attribute__((always_inline)) static inline void flush(void *p);
+
+/**
+ * Performs a memory access to the given address p. As a side-effect, the
+ * cache line containing that address is brought into the cache. This
+ * function WILL be inlined, i.e., each call produces a new load
+ * instruction with its own PC.
+ *
+ * @param      p     The address to load
+ */
+__attribute__((always_inline)) static inline void maccess(void *p);
+
+/**
+ * Issues a memory fence instruction. Will be inlined.
+ */
+__attribute__((always_inline)) static inline void mfence();
 
 #if defined(__i386__) || defined(__x86_64__)
 	// ---------------------------------------------------------------------------
@@ -170,7 +211,17 @@ void clock_teardown();
 	}
 #endif
 
-// ---------------------------------------------------------------------------
+
+/**
+ * Combines maccess, mfence, and flush into a Flush+Reload primitive: Loads
+ * the given address. Measures the execution time of that access. Flushes
+ * the address again right afterwards. Returns the measured load time.
+ *
+ * @param      ptr   The pointer to load
+ *
+ * @return     Time required to load the given address. Unit: delta of two
+ *             rdtsc()-timestamps.
+ */
 __attribute__((always_inline)) static inline int flush_reload_t(void *ptr) {
 	uint64_t start = 0, end = 0;
 

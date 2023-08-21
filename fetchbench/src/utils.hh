@@ -156,8 +156,14 @@ static inline void wrmsr(int cpu, uint32_t msr_reg, uint64_t msr_value) {
 	close(fd);
 }
 
+// Intel prefetcher control
 // http://web.archive.org/web/20201125030055if_/https://software.intel.com/content/www/us/en/develop/articles/disclosure-of-hw-prefetcher-control-on-some-intel-processors.html
+// Register:
 #define INTEL_MSR_MISC_FEATURE_CONTROL (0x1A4)
+/**
+ * Enum to keep the bit masks to select the prefetcher we want to control
+ * via MSR_MISC_FEATURE_CONTROL register on Intel CPUs.
+ */
 enum intel_prefetcher_t {
 	INTEL_L2_HW_PREFETCHER          = 0b0001ULL,
 	INTEL_L2_ADJACENT_CL_PREFETCHER = 0b0010ULL,
@@ -187,6 +193,9 @@ static inline void set_intel_prefetcher(int cpu, intel_prefetcher_t prefetcher, 
 	#endif
 }
 
+/**
+ * Enum to describe the architecture of a CPU.
+ */
 typedef enum {
 	ARCH_INTEL,
 	ARCH_AMD,

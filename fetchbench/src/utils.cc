@@ -8,6 +8,12 @@ using std::map;
 using std::vector;
 
 #ifdef __x86_64__
+/**
+ * On x86_64 CPUs: get the Vendor ID string. Allows us to distinguish
+ * between Intel and AMD CPUs.
+ *
+ * @return     Vendor ID. "GenuineIntel" on Intel, "AuthenticAMD" on AMD.
+ */
 string cpuid_get_vendor_id() {
 	char vendor_id[13];
 	__asm__ __volatile__(
@@ -25,6 +31,11 @@ string cpuid_get_vendor_id() {
 }
 #endif
 
+/**
+ * Determines the architecture of the current CPU.
+ *
+ * @return     The architecture as an element of the architecture_t enum.
+ */
 architecture_t get_arch() {
 	#ifdef __x86_64__
 		std::string vendor_id = cpuid_get_vendor_id();

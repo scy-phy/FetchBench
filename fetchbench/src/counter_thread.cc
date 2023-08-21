@@ -5,6 +5,14 @@ size_t volatile ctr_thread_ctr;
 bool volatile ctr_thread_running = false;
 std::thread ctr_thread;
 
+/**
+ * The function that is executed in the counter thread. After the thread is
+ * started, it is pinned to the CPU core specified by the cpu parameter.
+ * Then, it executes an endless loop that increments a counter and checks
+ * for a boolean break flag in each iteration.
+ *
+ * @param[in]  cpu   The CPU core to pin the thread to.
+ */
 void ctr_thread_worker(int cpu) {
 	pin_process_to_cpu(0, cpu);
 
@@ -36,6 +44,11 @@ void ctr_thread_worker(int cpu) {
 	#endif
 }
 
+/**
+ * Starts the counter thread on the given CPU core
+ *
+ * @param[in]  cpu   The cpu core to start the counter thread on.
+ */
 void ctr_thread_start(int cpu) {
 	if ( ! ctr_thread_running) {
 		ctr_thread_running = true;
@@ -51,6 +64,9 @@ void ctr_thread_start(int cpu) {
 	}
 }
 
+/**
+ * Stops the counter thread using the break flag.
+ */
 void ctr_thread_stop() {
 	if (ctr_thread_running) {
 		ctr_thread_running = false;

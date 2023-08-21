@@ -64,6 +64,16 @@ public:
 
 // ===== WORKLOADS =====
 
+/**
+ * DCReplay experiment workload. Uses the same instruction to train in
+ * mapping1 and trigger in mapping2.
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The training mapping
+ * @param      mapping2         The trigger mapping
+ * @param      additional_info  The additional information (must be
+ *                              nullptr)
+ */
 __attribute__((always_inline)) inline void workload_dcreplay_same_pc_different_memory(DCReplayExperiment const& experiment, Mapping const& mapping1, Mapping const& mapping2, void* additional_info) {
 	assert(additional_info == nullptr);
 

@@ -273,7 +273,7 @@ vector<bool> SMSExperiment::evaluate_cache_histogram(vector<size_t> const& cache
 }
 
 /**
- * Dumps a Stride Experiment and a cache histogram to a JSON file.
+ * Dumps an experiment and a cache histogram to a JSON file.
  *
  * @param      cache_histogram  The cache histogram
  * @param[in]  prefetch_vector  The prefetch vector

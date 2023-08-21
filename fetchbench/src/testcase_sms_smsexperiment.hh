@@ -87,6 +87,20 @@ public:
 
 // ===== WORKLOADS =====
 
+/**
+ * Trains the SMS prefetcher with a single load instruction in a single
+ * memory region (mapping2).
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The mapping to use when accessing unrelated
+ *                              regions is enabled, see additional_info
+ *                              parameter
+ * @param      mapping2         The mapping for the main experiment
+ * @param      additional_info  The additional information: bool*: Should
+ *                              the workload touch 16 unrelated regions
+ *                              after training, but before the trigger
+ *                              access?
+ */
 __attribute__((always_inline)) inline void workload_sms_same_pc_same_memory(SMSExperiment const& experiment, Mapping const& mapping1, Mapping const& mapping2, void* additional_info) {
 	assert(additional_info != nullptr);
 	bool access_regions = *((bool*)additional_info);
@@ -115,6 +129,16 @@ __attribute__((always_inline)) inline void workload_sms_same_pc_same_memory(SMSE
 	}
 }
 
+/**
+ * Trains the SMS prefetcher with a single load instruction in mapping1.
+ * Probes with the same load instruction in mapping2.
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The first mapping (training)
+ * @param      mapping2         The second mapping (trigger)
+ * @param      additional_info  The additional information (must be
+ *                              nullptr)
+ */
 __attribute__((always_inline)) inline void workload_sms_same_pc_different_memory(SMSExperiment const& experiment, Mapping const& mapping1, Mapping const& mapping2, void* additional_info) {
 	assert(additional_info == nullptr);
 
@@ -130,6 +154,20 @@ __attribute__((always_inline)) inline void workload_sms_same_pc_different_memory
 	}
 }
 
+/**
+ * Trains the SMS prefetcher in a memory region (mapping2) and attempts to
+ * trigger it in the same region, but with a different load instruction.
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The mapping to use when accessing
+ *                              unrelated regions is enabled, see
+ *                              additional_info parameter
+ * @param      mapping2         The mapping for the main experiment
+ * @param      additional_info  The additional information: bool*: Should
+ *                              the workload touch 16 unrelated regions
+ *                              after training, but before the trigger
+ *                              access?
+ */
 __attribute__((always_inline)) inline void workload_sms_different_pc_same_memory(SMSExperiment const& experiment, Mapping const& mapping1, Mapping const& mapping2, void* additional_info) {
 	assert(additional_info != nullptr);
 	bool access_regions = *((bool*)additional_info);
@@ -158,6 +196,14 @@ __attribute__((always_inline)) inline void workload_sms_different_pc_same_memory
 	}
 }
 
+/**
+ * Trains the prefetcher using instruction A in mapping1, attempts to trigger using instruction B in mapping2.
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The first mapping
+ * @param      mapping2         The second mapping
+ * @param      additional_info  The additional information (must be nullptr)
+ */
 __attribute__((always_inline)) inline void workload_sms_different_pc_different_memory(SMSExperiment const& experiment, Mapping const& mapping1, Mapping const& mapping2, void* additional_info) {
 	assert(additional_info == nullptr);
 
@@ -174,12 +220,28 @@ __attribute__((always_inline)) inline void workload_sms_different_pc_different_m
 }
 
 
+/**
+ * Try to estimate the number of entries in a PC-correlating SMS
+ * prefetcher. Train using instruction A in mapping1. Then touch a number
+ * (-> additional_info) of unrelated regions. Finally, try to trigger the
+ * prefetcher with the first pattern again. Note that this can only be an
+ * estimation, since we don't know the replacement policy.
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The mapping for all training activities,
+ *                              for the first and all additional regions
+ * @param      mapping2         The mapping for the trigger
+ * @param      additional_info  The additional information: size_t*: number
+ *                              of additional regions to touch between
+ *                              training the first region and attempting to
+ *                              re-trigger it
+ */
 __attribute__((always_inline)) inline void workload_sms_training_entries(SMSExperiment const& experiment, Mapping const& mapping1, Mapping const& mapping2, void* additional_info) {
 	assert(additional_info != nullptr);
 	size_t *entries = (size_t *)additional_info;
 	vector<size_t> random_offsets {
-			5 * CACHE_LINE_SIZE, 1 * CACHE_LINE_SIZE, 3 * CACHE_LINE_SIZE, 9 * CACHE_LINE_SIZE
-		};
+		5 * CACHE_LINE_SIZE, 1 * CACHE_LINE_SIZE, 3 * CACHE_LINE_SIZE, 9 * CACHE_LINE_SIZE
+	};
 
 	// Training in mapping1
 	for (auto offset = experiment.training_offsets.begin(); offset != std::prev(experiment.training_offsets.end()); ++offset) {
@@ -204,6 +266,7 @@ __attribute__((always_inline)) inline void workload_sms_training_entries(SMSExpe
 		maccess_noinline(mapping2.base_addr + offset);
 	}
 }
+
 /**
  * Performs training accesses with PC1 in memory area mapping1 and trigger
  * accesses with PC2 in memory area mapping2. PC1 and PC2 have colliding

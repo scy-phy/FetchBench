@@ -1,5 +1,13 @@
 #include "aligned_maccess.hh"
 
+/**
+ * Returns a pair of two function pointers to two non-inlining maccess
+ * functions that are aligned at a 2^(colliding_bits) boundary.
+ *
+ * @param[in]  colliding_bits  The number of colliding bits
+ *
+ * @return     std::pair of function pointers to two maccess functions.
+ */
 pair<maccess_func_t,maccess_func_t> get_maccess_functions(size_t colliding_bits) {
 	assert(colliding_bits >= 5 && colliding_bits <= 24);
 	pair<maccess_func_t, maccess_func_t> funcs;

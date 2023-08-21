@@ -17,7 +17,7 @@
 using json11::Json;
 using std::vector;
 
-// Array of maccess used for creating entries in SMS prefetcher
+// Array of maccess used for creating entries in stream prefetcher
 static void (*maccess_stream_array [20]) (void *p) = { maccess_1,
 						maccess_2,
 						maccess_3,
@@ -86,6 +86,15 @@ public:
 
 // ===== WORKLOADS =====
 
+/**
+ * Basic stream prefetcher workload. Uses different PCs to load from the
+ * offsets specified in .training_offsets.
+ *
+ * @param      experiment       The experiment
+ * @param      mapping1         The mapping to work in
+ * @param      additional_info  The additional information (must be
+ *                              nullptr)
+ */
 __attribute__((always_inline)) inline void workload_stream_basic(StreamExperiment const& experiment, Mapping const& mapping1, void* additional_info) {
 	assert(additional_info == nullptr);
 	int i = 0;
@@ -97,6 +106,5 @@ __attribute__((always_inline)) inline void workload_stream_basic(StreamExperimen
 		i++;
 	}
 	mfence();
-
 }
 

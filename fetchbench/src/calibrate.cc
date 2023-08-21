@@ -5,6 +5,16 @@
 #include "cacheutils.hh"
 #include "testcase_stride_strideexperiment.hh"
 
+/**
+ * Helper function to determine the Flush+Reload threshold.
+ *
+ * @param      ptr1    The first pointer to work with
+ * @param      ptr2    The second pointer to work with
+ * @param[in]  repeat  The number of repetitions to perform
+ * @param[in]  median  The median
+ *
+ * @return     The average timing value
+ */
 size_t access_measure(uint8_t* ptr1, uint8_t* ptr2, size_t repeat, size_t median) {
 	size_t sum = 0;
 	size_t avg = 0;
@@ -36,6 +46,13 @@ size_t access_measure(uint8_t* ptr1, uint8_t* ptr2, size_t repeat, size_t median
 	return avg;
 }
 
+/**
+ * Calibrates the Flush+Reload threshold
+ *
+ * @param      mapping  The mapping to work in
+ *
+ * @return     The recommended Flush+Reload threshold
+ */
 size_t calibrate_thresh(Mapping const& mapping) {
 	assert(mapping.size >= 2 * PAGE_SIZE);
 
@@ -61,7 +78,16 @@ size_t calibrate_thresh(Mapping const& mapping) {
 	return thresh;
 }
 
-
+/**
+ * Determines whether to use the use_nanosleep flag or not.
+ *
+ * @param      mapping         The mapping to work in
+ * @param[in]  no_repetitions  The number of repetitions to perform
+ * @param[in]  fr_thresh       The Flush+Reload threshold to use
+ * @param[in]  noise_thresh    The noise threshold to use
+ *
+ * @return     The recommended value for the use_nanosleep flag
+ */
 static bool calibrate_sleep(Mapping const& mapping, size_t no_repetitions, size_t fr_thresh, size_t noise_thresh) {
 	ssize_t stride = 3 * CACHE_LINE_SIZE;
 	size_t step = 12;
@@ -88,6 +114,16 @@ static bool calibrate_sleep(Mapping const& mapping, size_t no_repetitions, size_
 
 }
 
+/**
+ * Calibrates the noise threshold.
+ *
+ * @param      mapping         The mapping to work in
+ * @param[in]  no_repetitions  The number of repetitions to perform
+ * @param[in]  use_nanosleep   Whether to use nanosleep or not
+ * @param[in]  fr_thresh       The Flush+Reload threshold to use
+ *
+ * @return     The recommneded noise threshold.
+ */
 static size_t calibrate_noise_thresh(Mapping const& mapping, size_t no_repetitions, bool use_nanosleep, size_t fr_thresh){
 	// use dummy values to pass the assertion checks in collect_cache_histogram
 	ssize_t stride = 40 * CACHE_LINE_SIZE;
@@ -107,6 +143,14 @@ static size_t calibrate_noise_thresh(Mapping const& mapping, size_t no_repetitio
 	return (thresh*2) * 1000/(no_repetitions/cache_histogram_pos.size());
 }
 
+/**
+ * Calibrates all parameters. Returns the results via the references given
+ * as function parameters.
+ *
+ * @param      fr_thresh      The Flush+Reload threshold
+ * @param      noise_thresh   The noise threshold
+ * @param      use_nanosleep  The use_nanosleep flag
+ */
 void calibrate(size_t& fr_thresh, size_t& noise_thresh, int& use_nanosleep) {
 	Mapping mapping = allocate_mapping(2 * PAGE_SIZE);
 	size_t no_repetitions = 40000;
