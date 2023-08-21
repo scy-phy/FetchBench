@@ -60,5 +60,8 @@ Here are some command line arguments that can be used to override specific param
 - `-t`: Select a specific testcase to run (either `adjacent`, `stride`, `stream`, `sms`, `dcreplay`, `parr`, or `pchase`). If not specified, we run all of them.
 - `-i`: Whether to run only identification tests (`1`) or run identification tests for all prefetchers and characterization tests for those with positive identification results (`0`). Defaults to `0`.
 
-# Outputs
+## Outputs
 The code generates a lot of traces (`trace-*.json`), some figures based on these traces (`*.svg`), and result summaries (`results-*.json`). The result summaries are also printed to stdout.
+
+## Extending FetchBench
+See [EXTENDING.md](EXTENDING.md) for instructions on how to add testcases for other prefetcher designs to FetchBench.
