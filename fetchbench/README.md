@@ -33,7 +33,7 @@ CXXFLAGS="-D__APPLE__ -DAPPLE_MSR" CFLAGS="$CXXFLAGS" ASMFLAGS="$CXXFLAGS" cmake
 The easiest way to run the framework is:
 
 ```
-sudo build/prefetch-test | tee out.log
+sudo build/fetchbench | tee out.log
 ```
 
 As noted above, we only need root privileges on Intel. If the build is configured to not write to MSRs or if the framework is run on ARM, it can be called without `sudo`.
