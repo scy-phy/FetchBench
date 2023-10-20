@@ -14,7 +14,11 @@ This folder contains mbedtls 3.3.0 (from https://github.com/Mbed-TLS/mbedtls/tre
 
 The only change we did to the original code is that we fix the alignment of the AES lookup tables in memory. Otherwise, the compiler would choose the alignment arbitrarily, making the experiment harder to reproduce in its current stage. This change is documented in the commit history of this repository (commit 5bceb03dfc6b6344911a64bc74e9e383ebc21976).
 
-Compile mbedtls like this:
+To compile mbedtls, the following Python modules are required: `jsonschema`, `jinja2`. On Debian-based systems, these can be installed through the apt package manager:
+
+    sudo apt install python3-jsonschema python3-jinja2
+
+Then, compile mbedtls like this:
 
     cd lib/mbedtls
     DEBUG=1 SHARED=1 make no_test
