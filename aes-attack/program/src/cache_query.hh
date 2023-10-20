@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <inttypes.h>
+#include <time.h>
 
 #include "common_test.hh"
 
