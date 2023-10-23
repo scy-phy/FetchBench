@@ -1,5 +1,26 @@
 # AES Attack
 
+## Supported Platforms, Minimum Requirements
+
+We target the region-based prefetcher of the ARM Cortex-A72. We used a Raspberry Pi 4B, 4GB RAM, running Raspberry Pi OS (64 bit) for our experiments.
+
+Expect the following minimum requirements for a complete run:
+
+<table>
+    <tr>
+        <th>Runtime</th>
+        <td>30-35 hours</td>
+    </tr>
+    <tr>
+        <th>RAM</th>
+        <td>1 GB</td>
+    </tr>
+    <tr>
+        <th>Disk</th>
+        <td>3 GB</td>
+    </tr>
+</table>
+
 ## Compiler
 
 As we use some clang-specific features, we recommend to compile all code with clang.
@@ -8,7 +29,7 @@ To do this, run the following command before building any code from this reposit
     export CC=clang
     export CXX=clang++
 
-## `lib/mbedtls`
+## Compiling mbedtls (`lib/mbedtls`)
 
 This folder contains mbedtls 3.3.0 (from https://github.com/Mbed-TLS/mbedtls/tree/8c89224991adff88d53cd380f42a2baa36f91454).
 
@@ -25,7 +46,7 @@ Then, compile mbedtls like this:
 
 As a result, a shared library file `libmbedcrypto.so.13` is produced in the `library/` subfolder.
 
-## `program`
+## Compiling the attack code (`program`)
 
 This folder contains the actual attack code.
 
@@ -52,7 +73,7 @@ We recommend to run the attack in tmux:
     tmux
     build/attacker_automated > out.log
 
-Detatch with `C-b d`, re-attach with `tmux at`.
+Detatch with `Ctrl+B D`, re-attach with `tmux at`.
 
 When the attack is finished, find the results summary at the very end of `out.log`. A good result looks like this:
 
