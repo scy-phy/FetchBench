@@ -12,9 +12,8 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # paths to use the kernel modules
-include_directories("../rpi4-module-cache")
-include_directories("../smc-module/")
-include_directories("../timersmc-module/")
+include_directories("../kernel-modules/rpi4-module-cache")
+include_directories("../kernel-modules/smc-module/")
 
 # define main executables
 add_executable("attacker" "src/attacker.cc")

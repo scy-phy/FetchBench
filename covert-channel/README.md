@@ -11,12 +11,17 @@
  3. `kernel-modules/rpi4-module-cache` (Kernel module):
  Kernel module that collects the hits and miss in cache.
  
- 4. `kernel-modules/rpi4-module-ccr` (Kernel module):
+ 4. `kernel-modules/smc-module` (Kernel module):
+ Kernel module to make smc call to EL3
+
+ 5. `kernel-modules/rpi4-module-ccr` (Kernel module):
  Kernel module for timer source
  
 
 ## Prerequisite
-1. Clone OP-TEE project (It contains arm trusted firmware and OPTEE OS) [ Follow [doc](https://github.com/OP-TEE/manifest)]
+1. Download and extract arm toolchain [arm-gnu-toolchain-13.2.rel1-x86\_64-aarch64-none-linux-gnu.tar.xz](https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz?rev=22c39fc25e5541818967b4ff5a09ef3e&hash=E7676169CE35FC2AAECF4C121E426083871CA6E5) to cross compile the userspace app and TEE project. This points to ARM\_TOOLCHAIN\_PATH
+
+2. Clone OP-TEE project (It contains arm trusted firmware and OPTEE OS) [ Follow [doc](https://github.com/OP-TEE/manifest)]
  ```
  git clone https://github.com/OP-TEE/manifest
  ```
@@ -24,7 +29,7 @@ and copy the `tfa-service`
 ```
 cp -r tfa-service/prefetch_induce_svc arm-trusted-firmware/services
 ```
-2. Update the makefile to compile the new service
+3. Update the makefile to compile the new service
 
 ```diff --git a/bl31/bl31.mk b/bl31/bl31.mk
 index 3964469..dd21e56 100644
@@ -48,11 +53,13 @@ index 3964469..dd21e56 100644
 ```
 mkdir build
 cd build
-cmake .. -P ../rkpi4.cmake
+cmake -DCMAKE_CXX_COMPILER=<ARM_TOOLCHAIN_PATH>/bin/aarch64-none-linux-gnu-g++ -DCMAKE_C_COMPILER=<ARM_TOOLCHAIN_PATH>/bin/aarch64-none-linux-gnu-gcc ..
 cd ..
 make -C build
 ```
-2. `rpi4-module-cache` and `rpi4-module-ccr`
+
+## [Note: Following kernel modules require kernel-headers for compilation. Hence they need to be compiled on the device (Rockpi4)]
+2. `rpi4-module-cache`, `smc-module` and `rpi4-module-ccr`
 ```
 make ARCH=arm64 CROSS_COMPILE=<ARM_TOOLCHAIN_PATH>/bin/aarch64-linux-gnu-
 ```
