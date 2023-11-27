@@ -1,6 +1,6 @@
 # FetchBench
 
-Code artifact for the submission ["FetchBench: Systematic Identification and Characterization of Proprietary Prefetchers"](https://tschlueter.com/research/publications/23-fetchbench/ccs23-fetchbench.pdf) to CCS2023.
+Code artifact for the submission ["FetchBench: Systematic Identification and Characterization of Proprietary Prefetchers"](https://publications.cispa.saarland/3991/1/ccs23-fetchbench.pdf) to CCS2023.
 
 This repository contains:
 
